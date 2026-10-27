@@ -70,3 +70,35 @@ $("#search").addEventListener("input",renderProducts);$("#sort").addEventListene
 (async function init(){if(isConfigured()&&window.supabase){supabase=window.supabase.createClient(window.BAZARAK_CONFIG.supabaseUrl,window.BAZARAK_CONFIG.supabaseAnonKey);setStatus("در حال اتصال به پایگاه داده…");supabase.auth.onAuthStateChange(()=>{setTimeout(refreshAuth,0)});await refreshAuth();await loadProducts()}else{setStatus("حالت راه‌اندازی — اتصال Supabase هنوز تنظیم نشده است.");allProducts=demoProducts();renderProducts();$("#authStatus").textContent="برای فعال‌سازی حساب‌ها و سفارش آنلاین، config.js را تنظیم کن."}})();
 </script>
 </body></html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function () {
+  const url = "https://pxojfohqpuycigzzakap.supabase.co";
+  const key = "sb_publishable_U2LAnwytPkzbXqvSz2QR3w__Rk1sfBJ"
+";
+
+  const db = window.supabase.createClient(url, key);
+  const { data, error } = await db
+    .from("products")
+    .select("name, description, price, category");
+
+  const section = document.querySelector("#products");
+  if (!section) return;
+
+  if (error) {
+    section.insertAdjacentHTML(
+      "beforeend",
+      "<p>بارگذاری محصولات ناموفق بود.</p>"
+    );
+    console.error(error);
+    return;
+  }
+
+  section.insertAdjacentHTML(
+    "beforeend",
+    data.map(p =>
+      `<article><h3>${p.name}</h3><p>${p.description || ""}</p><p>قیمت: ${p.price}</p></article>`
+    ).join("")
+  );
+})();
+</script>
