@@ -4,3 +4,4 @@
 window.BAZARAK_CONFIG = {
   supabaseUrl: "https://pxojfohqpuycigzzakap.supabase.co",
   supabaseAnonKey: "sb_publishable_U2LAnwytPkzbXqvSz2QR3w__Rk1sfBJ"
+};
